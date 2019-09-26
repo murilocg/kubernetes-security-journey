@@ -10,3 +10,6 @@ A repository to test and evaluate many technologies related to security on kuber
 The target audience for this tutorial is someone planning to support a production microservices architecture running on a kubernetes cluster and wants to understand how everything fits together.
 
 ## Labs
+
+* [Prerequisites](docs/01-prerequisites.md)
+* [Installing the Client Tools](docs/02-client-tools.md)

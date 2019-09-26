@@ -11,5 +11,5 @@ The target audience for this tutorial is someone planning to support a productio
 
 ## Labs
 
-* [Prerequisites](01-prerequisites.md)
-* [Installing the Client Tools](02-client-tools.md)
+* [Prerequisites](docs/01-prerequisites.md)
+* [Installing the Client Tools](docs/02-client-tools.md)

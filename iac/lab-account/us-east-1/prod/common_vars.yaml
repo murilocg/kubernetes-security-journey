@@ -2,6 +2,7 @@
 region:  "us-east-1"
 cluster_name: "journey.dev.local"
 cidr: "10.0.0.0/16"
+kops_state_bucket: "terragrunt-journey-kops-state-prod"
 azs: 
   - "us-east-1a"
   - "us-east-1b"

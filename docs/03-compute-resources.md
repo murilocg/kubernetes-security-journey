@@ -50,5 +50,5 @@ ingress_ips:
 ```
 
 Those parameters are passed to the multiple projects:
-* lab-account/us-east-1/prod/kubernetes-cluster-vpc: setups a new AWS VPC with public and private subnets
-* lab-account/us-east-1/prod/kubernetes-cluster: depends on `kubernetes-cluster-vpc` and install kubernetes in this brand new AWS VPC
+* ***lab-account/us-east-1/prod/kubernetes-cluster-vpc***: setups a new AWS VPC with public and private subnets
+* ***lab-account/us-east-1/prod/kubernetes-cluster***: depends on `kubernetes-cluster-vpc` and install kubernetes in this brand new AWS VPC

@@ -25,6 +25,8 @@ inputs = {
   public_subnets  = "${local.common_vars.public_subnets}"
 
   enable_sagemaker_runtime_endpoint = false
+  enable_dns_hostnames = true
+  enable_dns_support = true
   enable_nat_gateway = true
   single_nat_gateway = true
   one_nat_gateway_per_az = false

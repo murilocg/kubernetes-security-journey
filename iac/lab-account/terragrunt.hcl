@@ -18,3 +18,5 @@ inputs = {
   tfstate_global_bucket        = "terragrunt-journey-terraform-state-prod"
   tfstate_global_bucket_region = "us-east-1"
 }
+
+iam_role = "arn:aws:iam::${get_aws_account_id()}:role/IacExecutionRole"

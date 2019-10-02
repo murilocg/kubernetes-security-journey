@@ -51,4 +51,36 @@ ingress_ips:
 
 Those parameters are passed to the multiple projects:
 * ***lab-account/us-east-1/prod/kubernetes-cluster-vpc***: setups a new AWS VPC with public and private subnets
-* ***lab-account/us-east-1/prod/kubernetes-cluster***: depends on `kubernetes-cluster-vpc` and install kubernetes in this brand new AWS VPC
+* ***lab-account/us-east-1/prod/kubernetes-cluster-prereqs***: depends on `kubernetes-cluster-vpc` and creates some prereq resources for kubernetes cluster
+* ***lab-account/us-east-1/prod/kubernetes-cluster***: this project creates the cluster using kops generated terraform file.
+
+Now we need some basic information about our aws account and username:
+```
+aws sts get-caller-identity
+```
+The output will be similar to
+```
+{
+    "UserId": "AIDAIVNLDQIJK2K4N7572",
+    "Account": "XXX",
+    "Arn": "arn:aws:iam::XXX:user/myuser"
+}
+```
+The arn (of your username) will be used to configure the role for terragrunt:
+
+This is the trust relationship policy:
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::XXX:user/myuser"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+

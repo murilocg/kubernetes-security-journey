@@ -2,6 +2,8 @@
 **/.terraform/*
 **/.secret/*
 **/.terragrunt-cache/*
+**/data/*
+**/kubernetes-cluster/cluster.yaml
 
 # .tfstate files
 *.tfstate

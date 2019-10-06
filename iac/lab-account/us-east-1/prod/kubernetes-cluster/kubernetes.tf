@@ -311,7 +311,7 @@ resource "aws_elb" "api-journey-dev-local" {
     lb_protocol       = "TCP"
   }
 
-  security_groups = [aws_security_group.api-elb-journey-dev-local.id, "sg-0c813de1e28acbdeb"]
+  security_groups = [aws_security_group.api-elb-journey-dev-local.id, "sg-01fa588a82f44204d"]
   subnets         = ["subnet-0363911365e725d13", "subnet-044ac7139d9159cda", "subnet-04980a7d1367dee67"]
 
   health_check {
@@ -463,7 +463,7 @@ resource "aws_route53_record" "api-journey-dev-local" {
     evaluate_target_health = false
   }
 
-  zone_id = "/hostedzone/Z026420811KUKXPJUDV6K"
+  zone_id = "/hostedzone/Z06149942S6QFKKU3V6XF"
 }
 
 resource "aws_security_group" "api-elb-journey-dev-local" {

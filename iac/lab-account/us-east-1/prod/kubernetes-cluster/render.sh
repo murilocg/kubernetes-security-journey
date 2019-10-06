@@ -4,12 +4,13 @@ set -x
 
 cd "$(dirname "$0")"
 
-pwd
 
 TF_OUTPUT="$(yes | terragrunt output-all -json | jq -s add )"
 CLUSTER_NAME="$(echo ${TF_OUTPUT} | jq -r .cluster_name.value)"
 STATE="s3://$(echo ${TF_OUTPUT} | jq -r .kops_s3_bucket_name.value)"
 
+# Removing old etcd backups
+aws s3 rm ${STATE}/backups 
 
 kops toolbox template --name $CLUSTER_NAME --values <( echo ${TF_OUTPUT}) --template cluster-definition.yaml --format-yaml > cluster.yaml
 

@@ -9,18 +9,9 @@ terraform {
 
   before_hook "gen_cert" {
     commands = ["plan"]
-    execute = ["./gencerts.sh","${dependency.tiller.outputs.helm_client_tls_private_key_pem}",".client_key.pem"]
+    execute = ["./gencerts.sh"]
   }
   
-  before_hook "gen_cert" {
-    commands = ["plan"]
-    execute = ["./gencerts.sh","${dependency.tiller.outputs.helm_client_tls_public_cert_pem}",".client_cert.pem"]
-  }
-  
-  before_hook "gen_cert" {
-    commands = ["plan"]
-    execute = ["./gencerts.sh","${dependency.tiller.outputs.helm_client_tls_ca_cert_pem}",".ca.pem"]
-  } 
 }
 
 include {

@@ -1,21 +1,23 @@
 apiVersion: kops/v1alpha2
 kind: Cluster
 metadata:
-  name: {{.cluster_name.value}}
+  name: {{.cluster_name}}
 spec:
   api:  
     loadBalancer:
       type: Public
+      {{if .k8s_api_http_security_group_id }}
       additionalSecurityGroups: ["{{.k8s_api_http_security_group_id.value}}"]
+      {{end}}
   authorization:
     rbac: {}
   channel: stable
   cloudLabels:
     environment: dev
-    owner: {{.cluster_name.value}}
+    owner: {{.cluster_name}}
     solution: kubernetes
   cloudProvider: aws
-  configBase: s3://{{.kops_s3_bucket_name.value}}/{{.cluster_name.value}}
+  configBase: s3://{{.kops_s3_bucket_name}}/{{.cluster_name}}
   dnsZone: {{.dns_zone.value}} 
   etcdClusters:
   - cpuRequest: 200m
@@ -40,8 +42,8 @@ spec:
   kubernetesApiAccess:
   - 0.0.0.0/0
   kubernetesVersion: 1.13.10
-  masterInternalName: api.internal.{{.cluster_name.value}}
-  masterPublicName: api.{{.cluster_name.value}}
+  masterInternalName: api.internal.{{.cluster_name}}
+  masterPublicName: api.{{.cluster_name}}
   networkCIDR: {{.vpc_cidr_block.value}} 
   networkID: {{.vpc_id.value}}
   networking:
@@ -51,6 +53,7 @@ spec:
   sshAccess:
   - 0.0.0.0/0
   subnets:
+  {{if .azs }}
   {{range $i, $id := .private_subnets.value}}
   - id: {{.}}
     cidr: {{index $.private_subnets_cidr_blocks.value $i}}
@@ -64,6 +67,7 @@ spec:
     type: Utility
     name: utility-{{index $.azs.value $i}}
     zone: {{index $.azs.value $i}}
+  {{end}}
   {{end}}
   topology:
     dns:
@@ -79,7 +83,7 @@ metadata:
   creationTimestamp: 2019-09-19T12:53:29Z
   generation: 1
   labels:
-    kops.k8s.io/cluster: {{.cluster_name.value}}
+    kops.k8s.io/cluster: {{.cluster_name}}
   name: master-ig
 spec:
   image: kope.io/k8s-1.13-debian-stretch-amd64-hvm-ebs-2019-08-16
@@ -107,7 +111,7 @@ metadata:
   creationTimestamp: 2019-09-19T12:53:30Z
   generation: 2
   labels:
-    kops.k8s.io/cluster: {{.cluster_name.value}}
+    kops.k8s.io/cluster: {{.cluster_name}}
   name: nodes
 spec:
   image: kope.io/k8s-1.13-debian-stretch-amd64-hvm-ebs-2019-08-16

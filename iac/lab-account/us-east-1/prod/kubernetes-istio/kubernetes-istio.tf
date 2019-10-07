@@ -18,9 +18,9 @@ provider "kubernetes" {
 provider "helm" {
   version        = "~> 0.9"
   install_tiller = false
-  client_certificate     = file(".secret/.client_cert.pem")
-  client_key             = file(".secret/.client_key.pem")
-  ca_certificate = file(".secret/.ca.pem")
+  client_certificate     = file(".secret/helm_client_tls_public_cert_pem.pem")
+  client_key             = file(".secret/helm_client_tls_private_key_pem.pem")
+  ca_certificate = file(".secret/helm_client_tls_ca_cert_pem.pem")
   namespace = "tiller"
 }
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

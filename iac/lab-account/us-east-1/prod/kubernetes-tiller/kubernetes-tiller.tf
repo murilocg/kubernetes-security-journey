@@ -37,6 +37,10 @@ module "tiller_service_account" {
     {
       name      = module.tiller_namespace.rbac_tiller_metadata_access_role
       namespace = module.tiller_namespace.name
+    },
+    {
+      name      = module.tiller_namespace.rbac_tiller_metadata_access_role
+      namespace = "default"
     }
   ]
 

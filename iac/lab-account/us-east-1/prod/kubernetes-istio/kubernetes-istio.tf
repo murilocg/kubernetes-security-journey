@@ -11,12 +11,17 @@ provider "kubernetes" {
   config_path    = "../kubernetes-cluster/.kube" 
 }
 
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # CONFIGURE OUR HELM PROVIDER 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 provider "helm" {
   version        = "~> 0.9"
-  install_tiller = true
+  install_tiller = false
+  client_certificate     = file(".secret/.client_cert.pem")
+  client_key             = file(".secret/.client_key.pem")
+  ca_certificate = file(".secret/.ca.pem")
+  namespace = "tiller"
 }
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # CREATE THE NAMESPACE WITH RBAC ROLES

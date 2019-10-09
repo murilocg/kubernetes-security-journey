@@ -16,7 +16,7 @@ yell() { echo "$0: $*" >&2; }
 if jq -e . >/dev/null 2>&1 <<<"$json_string"; then
   # Removing old etcd backups
   aws s3 rm ${STATE}/backups
-
+  rm -fr kubernetes.tf || true
   kops toolbox template --name $CLUSTER_NAME \
   --fail-on-missing=false \
   --values <( echo ${TF_OUTPUT}) \
@@ -29,7 +29,6 @@ if jq -e . >/dev/null 2>&1 <<<"$json_string"; then
   kops create secret --name ${CLUSTER_NAME} --state ${STATE} sshpublickey admin -i ~/.ssh/id_rsa.pub
 
   kops update cluster --out=. --target=terraform --state ${STATE} --name ${CLUSTER_NAME}
-
   rm -fr versions.tf || true
   echo "yes" | terraform 0.12upgrade .
 else

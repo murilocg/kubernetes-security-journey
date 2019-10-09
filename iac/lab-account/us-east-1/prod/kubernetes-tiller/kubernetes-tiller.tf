@@ -37,15 +37,28 @@ module "tiller_service_account" {
     {
       name      = module.tiller_namespace.rbac_tiller_metadata_access_role
       namespace = module.tiller_namespace.name
-    },
-    {
-      name      = module.tiller_namespace.rbac_tiller_metadata_access_role
-      namespace = "default"
     }
   ]
 
   labels = {
     app = "tiller"
+  }
+}
+
+# Bind for tiller to cluster-admin
+resource "kubernetes_cluster_role_binding" "tiller-cluster-admin" {
+  metadata {
+    name = "tiller-cluster-admin"
+  }
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = "cluster-admin"
+  }
+  subject {
+    kind      = "ServiceAccount"
+    name      = "tiller"
+    namespace = module.tiller_namespace.name 
   }
 }
 

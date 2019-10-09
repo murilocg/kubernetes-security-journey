@@ -22,5 +22,6 @@ dependencies {
 
 dependency "vpc" {
   config_path = "${get_terragrunt_dir()}/../kubernetes-cluster-vpc"
+
 }
 

@@ -17,7 +17,7 @@ spec:
     owner: {{.cluster_name}}
     solution: kubernetes
   cloudProvider: aws
-  configBase: s3://{{.kops_s3_bucket_name}}/{{.cluster_name}}
+  configBase: {{.kops_s3_bucket_name}}/{{.cluster_name}}
   dnsZone: {{.dns_zone.value}} 
   etcdClusters:
   - cpuRequest: 200m

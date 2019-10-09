@@ -6,17 +6,17 @@ locals {
   masters_role_name            = aws_iam_role.masters-journey-dev-local.name
   node_autoscaling_group_ids   = [aws_autoscaling_group.nodes-journey-dev-local.id]
   node_security_group_ids      = [aws_security_group.nodes-journey-dev-local.id]
-  node_subnet_ids              = ["subnet-01e813dcc5571f1f3", "subnet-026d86444de7f93a8", "subnet-0d440ff9b5344bdb8"]
+  node_subnet_ids              = ["subnet-002879c91022ebe0e", "subnet-00a4ef8be467af3ab", "subnet-09eb91a443dd3b783"]
   nodes_role_arn               = aws_iam_role.nodes-journey-dev-local.arn
   nodes_role_name              = aws_iam_role.nodes-journey-dev-local.name
   region                       = "us-east-1"
-  subnet_ids                   = ["subnet-01e813dcc5571f1f3", "subnet-026d86444de7f93a8", "subnet-0363911365e725d13", "subnet-044ac7139d9159cda", "subnet-04980a7d1367dee67", "subnet-0d440ff9b5344bdb8"]
-  subnet_private-us-east-1a_id = "subnet-01e813dcc5571f1f3"
-  subnet_private-us-east-1b_id = "subnet-0d440ff9b5344bdb8"
-  subnet_private-us-east-1c_id = "subnet-026d86444de7f93a8"
+  subnet_ids                   = ["subnet-002879c91022ebe0e", "subnet-00a4ef8be467af3ab", "subnet-04980a7d1367dee67", "subnet-05c7d1adb8eaa5814", "subnet-05f0606ea5b91c22b", "subnet-09eb91a443dd3b783"]
+  subnet_private-us-east-1a_id = "subnet-00a4ef8be467af3ab"
+  subnet_private-us-east-1b_id = "subnet-002879c91022ebe0e"
+  subnet_private-us-east-1c_id = "subnet-09eb91a443dd3b783"
   subnet_utility-us-east-1a_id = "subnet-04980a7d1367dee67"
-  subnet_utility-us-east-1b_id = "subnet-044ac7139d9159cda"
-  subnet_utility-us-east-1c_id = "subnet-0363911365e725d13"
+  subnet_utility-us-east-1b_id = "subnet-05c7d1adb8eaa5814"
+  subnet_utility-us-east-1c_id = "subnet-05f0606ea5b91c22b"
   vpc_id                       = "vpc-06c5650b8338e29ee"
 }
 
@@ -49,7 +49,7 @@ output "node_security_group_ids" {
 }
 
 output "node_subnet_ids" {
-  value = ["subnet-01e813dcc5571f1f3", "subnet-026d86444de7f93a8", "subnet-0d440ff9b5344bdb8"]
+  value = ["subnet-002879c91022ebe0e", "subnet-00a4ef8be467af3ab", "subnet-09eb91a443dd3b783"]
 }
 
 output "nodes_role_arn" {
@@ -65,19 +65,19 @@ output "region" {
 }
 
 output "subnet_ids" {
-  value = ["subnet-01e813dcc5571f1f3", "subnet-026d86444de7f93a8", "subnet-0363911365e725d13", "subnet-044ac7139d9159cda", "subnet-04980a7d1367dee67", "subnet-0d440ff9b5344bdb8"]
+  value = ["subnet-002879c91022ebe0e", "subnet-00a4ef8be467af3ab", "subnet-04980a7d1367dee67", "subnet-05c7d1adb8eaa5814", "subnet-05f0606ea5b91c22b", "subnet-09eb91a443dd3b783"]
 }
 
 output "subnet_private-us-east-1a_id" {
-  value = "subnet-01e813dcc5571f1f3"
+  value = "subnet-00a4ef8be467af3ab"
 }
 
 output "subnet_private-us-east-1b_id" {
-  value = "subnet-0d440ff9b5344bdb8"
+  value = "subnet-002879c91022ebe0e"
 }
 
 output "subnet_private-us-east-1c_id" {
-  value = "subnet-026d86444de7f93a8"
+  value = "subnet-09eb91a443dd3b783"
 }
 
 output "subnet_utility-us-east-1a_id" {
@@ -85,11 +85,11 @@ output "subnet_utility-us-east-1a_id" {
 }
 
 output "subnet_utility-us-east-1b_id" {
-  value = "subnet-044ac7139d9159cda"
+  value = "subnet-05c7d1adb8eaa5814"
 }
 
 output "subnet_utility-us-east-1c_id" {
-  value = "subnet-0363911365e725d13"
+  value = "subnet-05f0606ea5b91c22b"
 }
 
 output "vpc_id" {
@@ -137,7 +137,7 @@ resource "aws_autoscaling_group" "master-ig-masters-journey-dev-local" {
     }
   }
 
-  vpc_zone_identifier = ["subnet-01e813dcc5571f1f3"]
+  vpc_zone_identifier = ["subnet-00a4ef8be467af3ab"]
 
   tag {
     key                 = "KubernetesCluster"
@@ -217,7 +217,7 @@ resource "aws_autoscaling_group" "nodes-journey-dev-local" {
     }
   }
 
-  vpc_zone_identifier = ["subnet-01e813dcc5571f1f3", "subnet-0d440ff9b5344bdb8", "subnet-026d86444de7f93a8"]
+  vpc_zone_identifier = ["subnet-00a4ef8be467af3ab", "subnet-002879c91022ebe0e", "subnet-09eb91a443dd3b783"]
 
   tag {
     key                 = "KubernetesCluster"
@@ -311,8 +311,8 @@ resource "aws_elb" "api-journey-dev-local" {
     lb_protocol       = "TCP"
   }
 
-  security_groups = [aws_security_group.api-elb-journey-dev-local.id, "sg-01fa588a82f44204d"]
-  subnets         = ["subnet-0363911365e725d13", "subnet-044ac7139d9159cda", "subnet-04980a7d1367dee67"]
+  security_groups = [aws_security_group.api-elb-journey-dev-local.id, "sg-068c7d2715eb5fc77"]
+  subnets         = ["subnet-04980a7d1367dee67", "subnet-05c7d1adb8eaa5814", "subnet-05f0606ea5b91c22b"]
 
   health_check {
     target              = "SSL:443"
@@ -322,7 +322,8 @@ resource "aws_elb" "api-journey-dev-local" {
     timeout             = 5
   }
 
-  idle_timeout = 300
+  cross_zone_load_balancing = false
+  idle_timeout              = 300
 
   tags = {
     KubernetesCluster                         = "journey.dev.local"
@@ -463,7 +464,7 @@ resource "aws_route53_record" "api-journey-dev-local" {
     evaluate_target_health = false
   }
 
-  zone_id = "/hostedzone/Z06149942S6QFKKU3V6XF"
+  zone_id = "/hostedzone/Z0431749VSGUS8C691ZF"
 }
 
 resource "aws_security_group" "api-elb-journey-dev-local" {

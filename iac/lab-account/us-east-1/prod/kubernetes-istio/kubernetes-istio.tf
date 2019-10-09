@@ -27,6 +27,12 @@ provider "helm" {
 # CREATE THE NAMESPACE WITH RBAC ROLES
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+resource "kubernetes_namespace" "istio-system" {
+  metadata {
+    name = "istio-system"
+  }
+}
+
 data "helm_repository" "istio" {
     name = "istio.io"
     url  = "https://storage.googleapis.com/istio-release/releases/1.3.2/charts/"
@@ -36,4 +42,5 @@ resource "helm_release" "istio-1-3" {
     name       = "istio"
     repository = "${data.helm_repository.istio.metadata.0.name}"
     chart      = "istio-init"
+    namespace  = "${kubernetes_namespace.istio-system.metadata.0.name}"
 }

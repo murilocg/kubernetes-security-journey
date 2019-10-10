@@ -5,3 +5,19 @@ postgresql:
 env:
   database: "off"
 
+proxy:
+  type: LoadBalancer
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: ${public_zone_cert}
+
+dblessConfig:
+  config: 
+    _format_version: "1.1"
+
+    services:
+    - name: my-service
+    url: https://httpbin.org
+    routes:
+    - name: my-route
+        paths:
+        - /

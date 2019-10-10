@@ -48,7 +48,10 @@ resource "helm_release" "kong" {
     chart      = "stable/kong"
     namespace  = "${kubernetes_namespace.kong.metadata.0.name}"
 
+    # values = [
+    #     "${file("values.yaml")}"
+    # ]  
     values = [
-        "${file("values.yaml")}"
-    ]    
+      templatefile("values.yaml",{ public_zone_cert = "${var.public_zone_cert}" })
+    ]  
 }

@@ -17,6 +17,7 @@ dependency "tiller" {
 }
 
 inputs = {
-  public_zone_cert = "${local.common_vars.public_zone_cert}"
-  dns_name = "kong.${local.common_vars.public_zone_name}"
+  namespace = "kube-system"
+  public_zone_id = "${local.common_vars.public_zone_id}"
+  public_zone_name   = "${local.common_vars.public_zone_name}"
 }

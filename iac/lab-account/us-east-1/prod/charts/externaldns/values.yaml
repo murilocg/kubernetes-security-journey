@@ -1,0 +1,10 @@
+
+provider: "aws"
+aws:
+  zoneType: "public"
+txtOwnerId: ${public_zone_id}
+logLevel: "debug"
+rbac:
+  create: true
+domainFilters:
+  - ${public_zone_name}

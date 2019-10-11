@@ -9,6 +9,7 @@ cd "$(dirname "$0")"
 TF_OUTPUT="$(yes | terragrunt output-all -json | jq -s add )"
 CLUSTER_NAME="$2"
 STATE="s3://$3"
+PUBLIC_ZONE_ID="$4"
 
 yell() { echo "$0: $*" >&2; }
 
@@ -22,6 +23,7 @@ if jq -e . >/dev/null 2>&1 <<<"$json_string"; then
   --values <( echo ${TF_OUTPUT}) \
   --set-string cluster_name=${CLUSTER_NAME} \
   --set-string kops_s3_bucket_name=${STATE} \
+  --set-string public_zone_id=${PUBLIC_ZONE_ID} \
   --template cluster-definition.yaml --format-yaml > cluster.yaml
 
   kops replace -f cluster.yaml --state ${STATE} --name ${CLUSTER_NAME} --force

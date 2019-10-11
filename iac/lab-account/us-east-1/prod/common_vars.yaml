@@ -2,7 +2,7 @@
 region:  "us-east-1"
 cluster_name: "journey.dev.local"
 public_zone_name: "k8sguru.info"
-public_zone_id: "Z0431749VSGUS8C691ZF"
+public_zone_id: "ZYVBJBCYTQT36"
 public_zone_cert: "arn:aws:acm:us-east-1:105030913021:certificate/9822346b-c9a2-439b-88d6-31853b620b73"
 cidr: "10.0.0.0/16"
 kops_state_bucket: "terragrunt-journey-kops-state-prod-2"

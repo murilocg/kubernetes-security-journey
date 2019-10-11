@@ -359,6 +359,14 @@ resource "aws_iam_role" "nodes-journey-dev-local" {
   )
 }
 
+resource "aws_iam_role_policy" "additional-nodes-journey-dev-local" {
+  name = "additional.nodes.journey.dev.local"
+  role = aws_iam_role.nodes-journey-dev-local.name
+  policy = file(
+    "${path.module}/data/aws_iam_role_policy_additional.nodes.journey.dev.local_policy",
+  )
+}
+
 resource "aws_iam_role_policy" "masters-journey-dev-local" {
   name = "masters.journey.dev.local"
   role = aws_iam_role.masters-journey-dev-local.name

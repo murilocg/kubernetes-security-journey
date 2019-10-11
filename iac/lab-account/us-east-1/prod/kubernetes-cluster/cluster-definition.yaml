@@ -19,6 +19,29 @@ spec:
   cloudProvider: aws
   configBase: {{.kops_s3_bucket_name}}/{{.cluster_name}}
   dnsZone: {{.dns_zone.value}} 
+  additionalPolicies: 
+    node: | 
+       [
+         {
+           "Effect": "Allow",
+           "Action": [
+             "route53:ChangeResourceRecordSets"
+           ],
+           "Resource": [
+             "arn:aws:route53:::hostedzone/{{.public_zone_id}}"
+           ]
+         },
+         {
+           "Effect": "Allow",
+           "Action": [
+             "route53:ListHostedZones",
+             "route53:ListResourceRecordSets"
+           ],
+           "Resource": [
+             "*"
+           ]
+         }
+       ]
   etcdClusters:
   - cpuRequest: 200m
     etcdMembers:

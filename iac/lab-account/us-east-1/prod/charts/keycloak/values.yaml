@@ -1,0 +1,11 @@
+
+
+
+
+keycloak:
+  image:
+    repository: "${keycloak_image_repository}"
+    tag: "${keycloak_image_tag}"
+    pullPolicy: "Always"
+  service:
+    type: ClusterIP

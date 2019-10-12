@@ -8,6 +8,8 @@ cidr: "10.0.0.0/16"
 kops_state_bucket: "terragrunt-journey-kops-state-prod-2"
 kong_image_repository: "docker.io/leogsilva/kong"
 kong_image_tag: "v2"
+keycloak_image_repository: "docker.io/jboss/keycloak"
+keycloak_image_tag: "7.0.0"
 azs: 
   - "us-east-1a"
   - "us-east-1b"

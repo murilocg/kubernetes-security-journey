@@ -187,8 +187,8 @@ resource "aws_autoscaling_group" "master-ig-masters-journey-dev-local" {
 
 resource "aws_autoscaling_group" "nodes-journey-dev-local" {
   name     = "nodes.journey.dev.local"
-  max_size = 1
-  min_size = 1
+  max_size = 3
+  min_size = 3
 
   mixed_instances_policy {
     launch_template {
@@ -411,7 +411,7 @@ resource "aws_launch_template" "master-ig-masters-journey-dev-local" {
     name = aws_iam_instance_profile.masters-journey-dev-local.id
   }
 
-  image_id      = "ami-09b765ce2d4b0f6c1"
+  image_id      = "ami-077b21be2bc9db012"
   instance_type = "t3.medium"
   key_name      = aws_key_pair.kubernetes-journey-dev-local-59729192f8c74f680b63f8574029b877.id
 
@@ -447,7 +447,7 @@ resource "aws_launch_template" "nodes-journey-dev-local" {
     name = aws_iam_instance_profile.nodes-journey-dev-local.id
   }
 
-  image_id      = "ami-09b765ce2d4b0f6c1"
+  image_id      = "ami-077b21be2bc9db012"
   instance_type = "t3.large"
   key_name      = aws_key_pair.kubernetes-journey-dev-local-59729192f8c74f680b63f8574029b877.id
 

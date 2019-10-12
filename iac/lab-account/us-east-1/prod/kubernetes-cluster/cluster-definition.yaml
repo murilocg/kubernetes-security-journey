@@ -64,7 +64,7 @@ spec:
     anonymousAuth: false
   kubernetesApiAccess:
   - 0.0.0.0/0
-  kubernetesVersion: 1.13.10
+  kubernetesVersion: 1.14.6
   masterInternalName: api.internal.{{.cluster_name}}
   masterPublicName: api.{{.cluster_name}}
   networkCIDR: {{.vpc_cidr_block.value}} 
@@ -109,7 +109,7 @@ metadata:
     kops.k8s.io/cluster: {{.cluster_name}}
   name: master-ig
 spec:
-  image: kope.io/k8s-1.13-debian-stretch-amd64-hvm-ebs-2019-08-16
+  image: kope.io/k8s-1.14-debian-stretch-amd64-hvm-ebs-2019-08-16 
   machineType: t3.medium
   maxSize: 1
   minSize: 1
@@ -137,10 +137,10 @@ metadata:
     kops.k8s.io/cluster: {{.cluster_name}}
   name: nodes
 spec:
-  image: kope.io/k8s-1.13-debian-stretch-amd64-hvm-ebs-2019-08-16
+  image: kope.io/k8s-1.14-debian-stretch-amd64-hvm-ebs-2019-08-16 
   machineType: t3.large
-  maxSize: 1
-  minSize: 1
+  maxSize: 3
+  minSize: 3
   mixedInstancesPolicy:
     instances:
     - m5.large

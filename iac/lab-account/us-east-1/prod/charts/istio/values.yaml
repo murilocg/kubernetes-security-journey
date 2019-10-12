@@ -1,0 +1,46 @@
+# Ref https://github.com/knative/docs/blob/master/docs/install/installing-istio.md
+
+global:
+  controlPlaneSecurityEnabled: true
+
+  mtls:
+    # Default setting for service-to-service mtls. Can be set explicitly using
+    # destination rules or service annotations.
+    enabled: true
+
+  sds:
+    enabled: true
+    udsPath: "unix:/var/run/sds/uds_path"
+    token:
+      aud: "istio-ca"
+
+nodeagent:
+  enabled: true
+  image: node-agent-k8s
+  env:
+    CA_PROVIDER: "Citadel"
+    CA_ADDR: "istio-citadel:8060"
+    VALID_TOKEN: true
+
+sidecarInjectorWebhook:
+  enabled: true
+  enableNamespacesByDefault: true
+
+
+# Enable SDS in the gateway to allow dynamically configuring TLS of gateway.`
+gateways:
+  istio-ingressgateway:
+    sds:
+      enabled: true
+    autoscaleMin: 1
+    autoscaleMax: 2
+    resources:
+      requests: 
+        cpu: 500m
+        memory: 256Mi
+
+# More pilot replicas for better scale
+# Set pilot trace sampling to 100%
+pilot:
+  autoscaleMin: 2
+  traceSampling: 100

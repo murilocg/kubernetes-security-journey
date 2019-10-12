@@ -5,6 +5,11 @@ postgresql:
 env:
   database: "off"
 
+image:
+  repository: "${kong_image_repository}"
+  tag: "${kong_image_tag}"
+  pullPolicy: "Always"
+
 proxy:
   type: ClusterIP
 dblessConfig:

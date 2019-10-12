@@ -83,6 +83,6 @@ resource "helm_release" "kong" {
     namespace  = "${kubernetes_namespace.kong.metadata.0.name}"
 
     values = [
-      templatefile("values.yaml",{ dns_name = "${var.dns_name}" , public_zone_cert = "${var.public_zone_cert}" })
+      templatefile("values.yaml",{ kong_image_repository = "${var.kong_image_repository}" , kong_image_tag = "${var.kong_image_tag}", dns_name = "${var.dns_name}" , public_zone_cert = "${var.public_zone_cert}" })
     ]  
 }

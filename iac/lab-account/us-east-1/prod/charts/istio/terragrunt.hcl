@@ -1,17 +1,6 @@
 
-terraform {
-
-  before_hook "before_plan" {
-    commands = ["plan"]
-    execute = ["/bin/bash","-c","${get_terragrunt_dir()}/../../kubernetes-cluster/export_kubeconfig.sh","${get_terragrunt_dir()}"]
-    run_on_error = false
-  }
-
-  before_hook "gen_cert" {
-    commands = ["plan"]
-    execute = ["${get_terragrunt_dir()}/../../kubernetes-tiller/gencerts.sh"]
-  }
-  
+locals {
+  common_vars = yamldecode(file(find_in_parent_folders("common_vars.yaml")))
 }
 
 include {
@@ -26,3 +15,6 @@ dependency "tiller" {
   config_path = "${get_terragrunt_dir()}/../../kubernetes-tiller"
 }
 
+inputs = {
+    public_zone_cert = "${local.common_vars.public_zone_cert}"
+}

@@ -68,7 +68,11 @@ resource "kubernetes_service" "kong-service" {
 resource "kubernetes_namespace" "kong" {
   metadata {
     name = "kong"
+    labels = {
+      istio-injection = "enabled"
+    }
   }
+
 }
 
 data "helm_repository" "stable" {

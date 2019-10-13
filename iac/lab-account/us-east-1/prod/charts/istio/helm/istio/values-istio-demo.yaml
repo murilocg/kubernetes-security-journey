@@ -11,12 +11,6 @@ global:
         memory: 40Mi
 
   disablePolicyChecks: false
-  controlPlaneSecurityEnabled: true
-
-  mtls:
-    # Default setting for service-to-service mtls. Can be set explicitly using
-    # destination rules or service annotations.
-    enabled: true
 
 sidecarInjectorWebhook:
   enabled: true
@@ -27,7 +21,7 @@ sidecarInjectorWebhook:
 
 pilot:
   autoscaleEnabled: false
-  traceSampling: 20
+  traceSampling: 100.0
   resources:
     requests:
       cpu: 10m
@@ -66,13 +60,6 @@ kiali:
 
 gateways:
   istio-ingressgateway:
-    serviceAnnotations:
-        service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
-    #   "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "${public_zone_cert}"
-    #   "service.beta.kubernetes.io/aws-load-balancer-backend-protocol": "https"
-    #   "service.beta.kubernetes.io/aws-load-balancer-ssl-ports": "443"
-    #   "service.beta.kubernetes.io/aws-load-balancer-connection-draining-enabled": "true"
-    #   "service.beta.kubernetes.io/aws-load-balancer-connection-draining-timeout": "60"
     autoscaleEnabled: false
     resources:
       requests:
@@ -86,4 +73,16 @@ gateways:
       requests:
         cpu: 10m
         memory: 40Mi
+# This is used to generate istio.yaml for minimal, demo mode.
+# It is shipped with the release, used for bookinfo or quick installation of istio.
+# Includes components used in the demo, defaults to alpha3 rules.
 
+# @include <values-istio-demo-common.yaml>
+#
+global:
+  controlPlaneSecurityEnabled: false
+
+  mtls:
+    # Default setting for service-to-service mtls. Can be set explicitly using
+    # destination rules or service annotations.
+    enabled: false

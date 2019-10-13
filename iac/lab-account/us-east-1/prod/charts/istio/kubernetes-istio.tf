@@ -34,29 +34,36 @@ provider "helm" {
 resource "kubernetes_namespace" "istio-system" {
   metadata {
     name = "istio-system"
+    labels = {
+      istio-injection =  "disabled"
+    }
   }
 }
 
-data "helm_repository" "istio" {
-    name = "istio.io"
-    url  = "https://storage.googleapis.com/istio-release/releases/1.3.2/charts/"
-}
+# data "helm_repository" "istio" {
+#     name = "istio.io"
+#     url  = "https://storage.googleapis.com/istio-release/releases/1.3.2/charts/"
+# }
 
 resource "helm_release" "istio-1-3-init" {
     name       = "istio-init"
-    repository = "${data.helm_repository.istio.metadata.0.name}"
-    chart      = "istio-init"
+    # repository = "${data.helm_repository.istio.metadata.0.name}"
+    chart      = "./helm/istio-init"
     namespace  = "${kubernetes_namespace.istio-system.metadata.0.name}"
+    depends_on = ["kubernetes_namespace.istio-system"]
 }
 
 resource "helm_release" "istio-1-3" {
     name       = "istio"
-    repository = "${data.helm_repository.istio.metadata.0.name}"
-    chart      = "istio"
+    # repository = "${data.helm_repository.istio.metadata.0.name}"
+    chart      = "./helm/istio"
     namespace  = "${kubernetes_namespace.istio-system.metadata.0.name}"
+    depends_on = ["helm_release.istio-1-3-init"]
+    recreate_pods = true
+    force_update  = true
 
     values = [
-      templatefile("values.yaml",{ })
+      templatefile("values.yaml",{ public_zone_cert = "${var.public_zone_cert}" })
     ]  
 
 }

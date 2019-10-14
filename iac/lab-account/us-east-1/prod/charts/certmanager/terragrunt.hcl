@@ -11,6 +11,17 @@ terraform {
     execute = ["kubectl","--kubeconfig=${trimspace(abspath("../../kubernetes-cluster/.kube"))}","apply","-f","https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml","--validate=false"]
     run_on_error = false
   }
+  after_hook "after_apply" {
+    commands = ["apply"]
+    execute = ["kubectl","--kubeconfig=${trimspace(abspath("../../kubernetes-cluster/.kube"))}","apply","-f","clusterissuer-staging.yaml"]
+    run_on_error = false
+  }
+  after_hook "after_apply" {
+    commands = ["apply"]
+    execute = ["kubectl","--kubeconfig=${trimspace(abspath("../../kubernetes-cluster/.kube"))}","apply","-f","clusterissuer-prod.yaml"]
+    run_on_error = false
+  }
+
 }
 
 include {

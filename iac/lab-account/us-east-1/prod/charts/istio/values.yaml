@@ -12,6 +12,9 @@ global:
 
   disablePolicyChecks: false
   controlPlaneSecurityEnabled: true
+  k8sIngress:
+    enabled: true
+    gatewayName: ingressgateway
 
   mtls:
     # Default setting for service-to-service mtls. Can be set explicitly using
@@ -68,6 +71,8 @@ gateways:
   istio-ingressgateway:
     serviceAnnotations:
         service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+        external-dns.alpha.kubernetes.io/hostname: "*.journey.k8sguru.info"
+
     #   "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "${public_zone_cert}"
     #   "service.beta.kubernetes.io/aws-load-balancer-backend-protocol": "https"
     #   "service.beta.kubernetes.io/aws-load-balancer-ssl-ports": "443"

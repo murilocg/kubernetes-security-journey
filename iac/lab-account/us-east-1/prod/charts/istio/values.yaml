@@ -15,6 +15,7 @@ global:
   k8sIngress:
     enabled: true
     gatewayName: ingressgateway
+    enableHttps: false
 
   mtls:
     # Default setting for service-to-service mtls. Can be set explicitly using
@@ -79,6 +80,8 @@ gateways:
     #   "service.beta.kubernetes.io/aws-load-balancer-connection-draining-enabled": "true"
     #   "service.beta.kubernetes.io/aws-load-balancer-connection-draining-timeout": "60"
     autoscaleEnabled: false
+    sds:
+      enabled: true
     resources:
       requests:
         cpu: 10m

@@ -16,8 +16,10 @@ yell() { echo "$0: $*" >&2; }
 #Check if the output is a valid json
 if jq -e . >/dev/null 2>&1 <<<"$json_string"; then
   # Removing old etcd backups
-  aws s3 rm ${STATE}/backups
+  aws s3 rm ${STATE}/backups || true
+  aws s3 rm ${STATE}/${CLUSTER_NAME}/cluster.spec || true
   rm -fr kubernetes.tf || true
+  rm -fr data/* || true
   kops toolbox template --name $CLUSTER_NAME \
   --fail-on-missing=false \
   --values <( echo ${TF_OUTPUT}) \

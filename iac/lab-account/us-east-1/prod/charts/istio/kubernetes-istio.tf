@@ -10,7 +10,16 @@ terraform {
 provider "kubernetes" {
   config_path    = abspath("../../kubernetes-cluster/.kube")
 }
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# CONFIGURE TEMPLATES
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+data "template_file" "dns-clusterissuer-template" {
+  template = "${file("${path.module}/templates/dns-clusterissuer.yaml.tmpl")}"
+  vars = {
+    public_zone_id = "${var.public_zone_id}"
+  }
+}
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # CONFIGURE OUR HELM PROVIDER 
@@ -38,12 +47,32 @@ resource "kubernetes_namespace" "istio-system" {
       istio-injection =  "disabled"
     }
   }
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
-# data "helm_repository" "istio" {
-#     name = "istio.io"
-#     url  = "https://storage.googleapis.com/istio-release/releases/1.3.2/charts/"
-# }
+resource "null_resource" "crds" {
+  provisioner "local-exec" {
+    environment = {
+      KUBECONFIG = abspath("../../kubernetes-cluster/.kube")
+    }
+    command = "kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.6/deploy/manifests/00-crds.yaml"
+  }
+}
+
+resource "null_resource" "dns-clusterissuer" {
+  triggers = {
+      test = "${data.template_file.dns-clusterissuer-template.rendered}"
+  }  
+  provisioner "local-exec" {
+    environment = {
+      KUBECONFIG = abspath("../../kubernetes-cluster/.kube")
+    }
+    command = "${format("kubectl apply -f - <<EOF \n%s\nEOF", data.template_file.dns-clusterissuer-template.rendered)}"
+  }
+  depends_on = ["helm_release.istio-1-3"]
+}
 
 resource "helm_release" "istio-1-3-init" {
     name       = "istio-init"

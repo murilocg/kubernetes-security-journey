@@ -1,7 +1,31 @@
-apiVersion: cert-manager.io/v1alpha2
+# apiVersion: cert-manager.io/v1alpha2
+# kind: ClusterIssuer
+# metadata:
+#   name: letsencrypt-staging
+#   namespace: kube-system
+# spec:
+#   acme:
+#     # The ACME server URL
+#     server: https://acme-staging-v02.api.letsencrypt.org/directory
+#     # Email address used for ACME registration
+#     email: user@k8sguru.info
+#     # Name of a secret used to store the ACME account private key
+#     privateKeySecretRef:
+#       name: letsencrypt-staging
+#     # Enable the HTTP-01 challenge provider
+#     solvers:
+#     - selector:
+#         dnsZones:
+#           - "journey.k8sguru.info"
+#       dns01:
+#         route53:
+#           region:  us-east-1
+#           hostedZoneID: ZYVBJBCYTQT36
+
+apiVersion: certmanager.k8s.io/v1alpha1
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-staging
+  name: dns-letsencrypt-staging
   namespace: kube-system
 spec:
   acme:
@@ -11,12 +35,11 @@ spec:
     email: user@k8sguru.info
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
-      name: letsencrypt-staging
-    # Enable the HTTP-01 challenge provider
-    solvers:
-    - selector:
-        dnsZones:
-          - "journey.k8sguru.info"
-      dns01:
-        route53:
-          region:  us-east-1
+      name: letsencrypt-staging 
+    dns01:
+      providers:
+        - name: route53
+          route53:
+            region:  us-east-1
+            hostedZoneID: ZYVBJBCYTQT36
+

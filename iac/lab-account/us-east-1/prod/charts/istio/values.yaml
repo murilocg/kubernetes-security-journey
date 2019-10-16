@@ -15,7 +15,7 @@ global:
   k8sIngress:
     enabled: true
     gatewayName: ingressgateway
-    enableHttps: false
+    enableHttps: true
 
   mtls:
     # Default setting for service-to-service mtls. Can be set explicitly using
@@ -68,11 +68,19 @@ kiali:
   enabled: true
   createDemoSecret: true
 
+certmanager:
+  enabled: true
+  email: user@k8sguru.info
+  podDnsConfig:
+    nameservers:
+      - "8.8.4.4"
+      - "8.8.8.8"
+      
 gateways:
   istio-ingressgateway:
     serviceAnnotations:
         service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
-        external-dns.alpha.kubernetes.io/hostname: "*.journey.k8sguru.info"
+        external-dns.alpha.kubernetes.io/hostname: "*.k8sguru.info"
 
     #   "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "${public_zone_cert}"
     #   "service.beta.kubernetes.io/aws-load-balancer-backend-protocol": "https"

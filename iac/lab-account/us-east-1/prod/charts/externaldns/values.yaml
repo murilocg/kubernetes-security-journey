@@ -8,3 +8,7 @@ rbac:
   create: true
 domainFilters:
   - ${public_zone_name}
+sources:
+  - service
+  - ingress
+  - istio-gateway

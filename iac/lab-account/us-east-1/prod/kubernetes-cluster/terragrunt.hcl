@@ -10,7 +10,11 @@ terraform {
     execute = ["./render.sh","${get_terragrunt_dir()}","${local.common_vars.cluster_name}","${local.common_vars.kops_state_bucket}","${local.common_vars.public_zone_id}"]
     run_on_error = false
   }
+
+
 }
+
+
 
 include {
   path = find_in_parent_folders()

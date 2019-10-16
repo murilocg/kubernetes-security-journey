@@ -3,6 +3,7 @@ locals {
   common_vars = yamldecode(file(find_in_parent_folders("common_vars.yaml")))
 }
 
+
 terraform {
 
   before_hook "before_plan" {
@@ -25,7 +26,3 @@ terraform {
 include {
   path = find_in_parent_folders()
 }
-
-# dependencies {
-#   paths = ["${get_terragrunt_dir()}/../../kubernetes-cluster"]
-# }

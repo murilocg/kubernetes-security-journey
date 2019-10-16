@@ -17,4 +17,5 @@ dependency "tiller" {
 
 inputs = {
     public_zone_cert = "${local.common_vars.public_zone_cert}"
+    public_zone_id = "${local.common_vars.public_zone_id}"
 }

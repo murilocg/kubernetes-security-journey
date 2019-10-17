@@ -40,5 +40,15 @@ spec:
         port:
           number: 8000
         host: httpbin
+  tls:
+  - match:
+    - port: 443
+      sniHosts:
+      - httpbin.k8sguru.info
+    route:
+    - destination:
+        port:
+          number: 8000
+        host: httpbin        
 EOF
 

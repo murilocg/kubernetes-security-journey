@@ -24,6 +24,7 @@ inputs = {
   azs             = "${local.azs}"
   private_subnets = "${local.private_subnets}"
   public_subnets  = "${local.public_subnets}"
+  region = "${local.common.region}"
 
   enable_sagemaker_runtime_endpoint = false
   enable_dns_hostnames = true

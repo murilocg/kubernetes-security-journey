@@ -43,5 +43,5 @@ terraform {
 }
 
 dependency "prereqs" {
-  config_path = "${get_terragrunt_dir()}/../kubernetes-cluster-prereqs"
+  config_path = "${get_terragrunt_dir()}/../prereqs"
 }

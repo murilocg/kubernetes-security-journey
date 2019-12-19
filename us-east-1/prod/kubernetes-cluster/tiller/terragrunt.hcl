@@ -14,7 +14,7 @@ terraform {
 }
 
 dependency "cluster" {
-  config_path = "${get_terragrunt_dir()}/../kubernetes-cluster"
+  config_path = "${get_terragrunt_dir()}/../cluster"
 }
 
 input {

@@ -1,12 +1,15 @@
-# Configure Terragrunt to automatically store tfstate files in an S3 bucket
+locals {
+  common = yamldecode(file("./common_vars.yaml"))
+}
+
 remote_state {
   backend = "s3"
   config = {
     encrypt        = true
-    bucket         = "br-com-k8sguru-terragrunt-state-prod"
+    bucket         = "${local.common.bucket_terragrunt_state}"
     key            = "${path_relative_to_include()}/terraform.tfstate"
-    region         = "us-east-1"
-    dynamodb_table = "br-com-k8sguru-terragrunt-locks"
+    region         = "${local.common.region}"
+    dynamodb_table = "${local.common.dynamodb_table}"
   }
 }
 

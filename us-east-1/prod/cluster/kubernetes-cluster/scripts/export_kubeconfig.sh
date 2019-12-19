@@ -2,12 +2,10 @@
 
 set -x
 
-cd "$(dirname "$0")"
+CLUSTER_NAME="$1"
+STATE="s3://$2"
 
-CLUSTER_NAME="$2"
-STATE="s3://$3"
-
-kops export kubecfg ${CLUSTER_NAME} --state ${STATE} --kubeconfig ./.kube
+kops export kubecfg ${CLUSTER_NAME} --state ${STATE} --kubeconfig ../.kube
 
 SERVER=$(kubectl config view --kubeconfig .kube -o jsonpath='{..clusters[0].cluster.server}')
 
@@ -57,4 +55,4 @@ for i in `dig +short $(basename ${SERVER})`; do
 done
 
 # Update .kube configuration
-kubectl config set-cluster journey.dev.local --server=https://api.journey.dev.local --kubeconfig .kube
+kubectl config set-cluster ${CLUSTER_NAME} --server=https://${CLUSTER_NAME} --kubeconfig .kube

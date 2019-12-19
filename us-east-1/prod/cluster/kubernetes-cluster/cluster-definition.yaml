@@ -13,7 +13,7 @@ spec:
     rbac: {}
   channel: stable
   cloudLabels:
-    environment: dev
+    environment: {{.env}}
     owner: {{.cluster_name}}
     solution: kubernetes
   cloudProvider: aws
@@ -144,7 +144,7 @@ spec:
     kops.k8s.io/instancegroup: master-ig
   role: Master
   subnets:
-  - private-us-east-1a
+  - private-{{index $.azs.value 0}}
 ---
 
 apiVersion: kops/v1alpha2
@@ -172,5 +172,7 @@ spec:
     kops.k8s.io/instancegroup: nodes
   role: Node
   subnet:
-  - private-us-east-1a
-  - private-us-east-1b
+  {{if .azs }}
+  {{range $i, $id := .azs.value}}
+  - private-{{index $.azs.value $i}}
+  {{end}}

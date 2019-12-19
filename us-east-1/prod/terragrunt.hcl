@@ -10,4 +10,4 @@ remote_state {
   }
 }
 
-iam_role = "arn:aws:iam::${get_aws_account_id()}:role/IacExecutionRole"
+iam_role = "arn:aws:iam::${get_aws_account_id()}:role/IacManagementRole"

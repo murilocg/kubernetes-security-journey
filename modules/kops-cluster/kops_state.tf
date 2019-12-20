@@ -1,8 +1,4 @@
 
-data "aws_vpc" "cluster-vpc" {
-  tags = "${var.vpc_filter}"
-}
-
 resource "aws_s3_bucket" "kops_state" {
   bucket = "${var.bucket_name}"
   acl    = "private"
@@ -17,7 +13,7 @@ resource "aws_s3_bucket" "kops_state" {
 
 resource "aws_security_group" "k8s_api_http" {
   name   = "${var.environment}_k8s_api_http"
-  vpc_id = "${data.aws_vpc.cluster-vpc.id}"
+  vpc_id = "${var.vpc_id}"
   tags   = "${var.tags}"
 
   ingress {

@@ -4,6 +4,6 @@ resource "aws_route53_zone" "cluster" {
   name = "${var.cluster_name}"
   force_destroy = true
   vpc {
-    vpc_id = "${data.aws_vpc.cluster-vpc.id}"
+    vpc_id = "${var.vpc_id}"
   }
 }

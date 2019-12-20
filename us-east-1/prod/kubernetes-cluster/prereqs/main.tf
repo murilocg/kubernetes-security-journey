@@ -7,7 +7,7 @@ provider "aws" {
   region = "${var.region}"
 }
 
-module "vpc" {
+module "prereqs" {
   source = "../../../../modules/kops-cluster"
   cluster_name = "${var.cluster_name}"
   environment = "${var.environment}"

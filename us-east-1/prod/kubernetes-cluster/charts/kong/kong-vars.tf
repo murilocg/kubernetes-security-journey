@@ -20,3 +20,13 @@ variable "kong_image_tag" {
     default = "v2"
     description = "Customized kong image containing kong-oidc from https://github.com/nokia/kong-oidc"
 }
+
+variable "helm_home" {
+  type = string
+}
+
+variable "kube_config" {
+  type = string
+}
+
+

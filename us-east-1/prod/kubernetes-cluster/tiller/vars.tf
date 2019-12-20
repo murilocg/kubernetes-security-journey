@@ -77,7 +77,7 @@ variable "kubectl_config_context_name" {
   default     = ""
 }
 
-variable "kubectl_config_path" {
+variable "kube_config" {
   description = "The path to the config file to use for kubectl. If empty, defaults to $HOME/.kube/config"
   type        = string
   default     = "~/.kube/config"

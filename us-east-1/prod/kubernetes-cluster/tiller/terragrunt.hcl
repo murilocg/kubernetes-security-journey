@@ -18,5 +18,5 @@ dependency "cluster" {
 }
 
 input {
-  kubectl_config_path = "${local.common.config_path}/kube/config"
+  kube_config = "${local.common.config_path}/kube/config"
 }

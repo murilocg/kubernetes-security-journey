@@ -8,7 +8,7 @@ terraform {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 provider "kubernetes" {
-  config_path    = abspath("../../kubernetes-cluster/.kube")
+  config_path    = abspath("${var.kube_config}")
 }
 
 
@@ -18,14 +18,13 @@ provider "kubernetes" {
 provider "helm" {
   version        = "~> 0.9"
   install_tiller = false
-  home = "${var.helm_home}"
   client_certificate     = file("../../kubernetes-tiller/.secret/helm_client_tls_public_cert_pem.pem")
   client_key             = file("../../kubernetes-tiller/.secret/helm_client_tls_private_key_pem.pem")
   ca_certificate = file("../../kubernetes-tiller/.secret/helm_client_tls_ca_cert_pem.pem")
   namespace = "tiller"
 
   kubernetes {
-    config_path = abspath("../../kubernetes-cluster/.kube")
+    config_path = abspath("${var.kube_config}")
   }
 }
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -4,8 +4,9 @@ set -x
 
 CLUSTER_NAME="$1"
 STATE="s3://$2"
+KUBE_CONFIG="$3"
 
-kops export kubecfg ${CLUSTER_NAME} --state ${STATE} --kubeconfig ../.kube
+kops export kubecfg ${CLUSTER_NAME} --state ${STATE} --kubeconfig ${KUBE_CONFIG}
 
 SERVER=$(kubectl config view --kubeconfig .kube -o jsonpath='{..clusters[0].cluster.server}')
 

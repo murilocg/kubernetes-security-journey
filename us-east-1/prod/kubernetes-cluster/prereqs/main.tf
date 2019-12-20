@@ -8,7 +8,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = "../../../modules/kops-cluster"
+  source = "../../../../modules/kops-cluster"
   cluster_name = "${var.cluster_name}"
   environment = "${var.environment}"
   bucket_name = "${var.kops_state_bucket}"

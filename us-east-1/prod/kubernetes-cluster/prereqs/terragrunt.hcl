@@ -11,6 +11,8 @@ dependency "vpc" {
   mock_outputs = {
     vpc_id = "vpc-2a999999"
   }
+  skip_outputs = true
+  mock_outputs_allowed_terraform_commands = ["plan"]
 }
 
 inputs = {

@@ -45,4 +45,6 @@ terraform {
 
 dependency "prereqs" {
   config_path = "${get_terragrunt_dir()}/../prereqs"
+  skip_outputs = true
+  mock_outputs_allowed_terraform_commands = ["plan"]
 }

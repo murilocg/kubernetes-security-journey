@@ -10,6 +10,7 @@ include {
 dependency "tiller" {
   config_path = "${get_terragrunt_dir()}/../../tiller"
   skip_outputs = true
+  mock_outputs_allowed_terraform_commands = ["plan"]
 }
 
 inputs = {

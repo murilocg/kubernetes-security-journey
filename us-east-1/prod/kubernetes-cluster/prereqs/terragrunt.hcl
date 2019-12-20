@@ -9,6 +9,9 @@ locals {
 
 dependency "vpc" {
   config_path = "${get_terragrunt_dir()}/../vpc"
+  mock_outputs = {
+    vpc_id = "vpc-2a999999"
+  }
 }
 
 inputs = {

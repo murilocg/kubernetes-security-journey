@@ -9,7 +9,7 @@ locals {
 terraform {
   after_hook "gen_cert" {
     commands = ["apply"]
-    execute = ["./scripts/gencerts.sh", "${local.common.config_path}/secrets"]
+    execute = ["./scripts/gencerts.sh", "${local.common.helm_home}"]
   }
 }
 
@@ -18,5 +18,5 @@ dependency "cluster" {
 }
 
 input {
-  kube_config = "${local.common.config_path}/kube/config"
+  kube_config = "${local.common.kube_config}"
 }

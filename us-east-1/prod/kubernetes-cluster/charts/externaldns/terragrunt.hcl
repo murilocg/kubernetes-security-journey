@@ -1,7 +1,7 @@
 
 
 locals {
-  common_vars = yamldecode(file(find_in_parent_folders("common_vars.yaml")))
+  common = yamldecode(file(find_in_parent_folders("common_vars.yaml")))
 }
 
 include {
@@ -14,6 +14,8 @@ dependency "tiller" {
 
 inputs = {
   namespace = "kube-system"
-  public_zone_id = "${local.common_vars.public_zone_id}"
-  public_zone_name   = "${local.common_vars.public_zone_name}"
+  public_zone_id = "${local.common.public_zone_id}"
+  public_zone_name   = "${local.common.public_zone_name}"
+  helm_home = "${local.common.helm_home}"
+  kube_config = "${local.common.kube_config}"
 }

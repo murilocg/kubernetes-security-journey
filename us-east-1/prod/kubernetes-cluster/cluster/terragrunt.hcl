@@ -37,7 +37,7 @@ terraform {
       "./scripts/export_kubeconfig.sh",
       "${local.common.cluster_name}",
       "${local.common.kops_state_bucket}",
-      "${local.common.config_path}/kube/config"
+      "${local.common.kube_config}"
     ]
     run_on_error = false
   }

@@ -1,7 +1,7 @@
 
 
 locals {
-  common_vars = yamldecode(file(find_in_parent_folders("common_vars.yaml")))
+  common = yamldecode(file(find_in_parent_folders("common_vars.yaml")))
 }
 
 include {
@@ -14,10 +14,10 @@ dependency "tiller" {
 }
 
 inputs = {
-  public_zone_cert = "${local.common_vars.public_zone_cert}"
-  dns_name = "kong.${local.common_vars.public_zone_name}"
+  public_zone_cert = "${local.common.public_zone_cert}"
+  dns_name = "kong.${local.common.public_zone_name}"
+  helm_home = "${local.common.helm_home}"
+  kube_config = "${local.common.kube_config}"
   kong_image_repository = "docker.io/leogsilva/kong"
   kong_image_tag        = "v2"
-  helm_home = "${local.common_vars.config_path}/helm"
-  kube_config = "${local.common_vars.config_path}/kube/config"
 }

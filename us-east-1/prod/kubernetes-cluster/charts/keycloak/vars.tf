@@ -20,3 +20,12 @@ variable "keycloak_image_tag" {
     default = "7.0.0"
     description = "keycloak image tag"
 }
+
+variable "helm_home" {
+  type = string
+}
+
+variable "kube_config" {
+  type = string
+}
+

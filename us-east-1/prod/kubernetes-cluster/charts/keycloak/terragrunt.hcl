@@ -1,7 +1,7 @@
 
 
 locals {
-  common_vars = yamldecode(file(find_in_parent_folders("common_vars.yaml")))
+  common = yamldecode(file(find_in_parent_folders("common_vars.yaml")))
 }
 
 include {
@@ -13,8 +13,10 @@ dependency "tiller" {
 }
 
 inputs = {
-  public_zone_cert = "${local.common_vars.public_zone_cert}"
-  dns_name = "idp.${local.common_vars.public_zone_name}"
-  keycloak_image_repository = "${local.common_vars.keycloak_image_repository}"
-  keycloak_image_tag        = "${local.common_vars.keycloak_image_tag}"
+  public_zone_cert = "${local.common.public_zone_cert}"
+  dns_name = "idp.${local.common.public_zone_name}"
+  keycloak_image_repository = "docker.io/jboss/keycloak"
+  keycloak_image_tag        = "7.0.0"
+  helm_home = "${local.common.helm_home}"
+  kube_config = "${local.common.kube_config}"
 }

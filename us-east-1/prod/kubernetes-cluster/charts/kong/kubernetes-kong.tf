@@ -19,6 +19,7 @@ provider "helm" {
   version        = "~> 0.9"
   install_tiller = false
   home = "${var.helm_home}"
+  init_helm_home = true
   # client_certificate     = file("../../kubernetes-tiller/.secret/helm_client_tls_public_cert_pem.pem")
   # client_key             = file("../../kubernetes-tiller/.secret/helm_client_tls_private_key_pem.pem")
   # ca_certificate = file("../../kubernetes-tiller/.secret/helm_client_tls_ca_cert_pem.pem")

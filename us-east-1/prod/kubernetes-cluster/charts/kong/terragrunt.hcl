@@ -18,6 +18,6 @@ inputs = {
   dns_name = "kong.${local.common_vars.public_zone_name}"
   kong_image_repository = "docker.io/leogsilva/kong"
   kong_image_tag        = "v2"
-  helm_home = "${local.common_vars.config_path}/secrets"
+  helm_home = "${local.common_vars.config_path}/helm"
   kube_config = "${local.common_vars.config_path}/kube/config"
 }

@@ -16,7 +16,7 @@ dependency "vpc" {
 inputs = {
   cluster_name = local.common.cluster_name
   environment = local.common.environment
-  bucket_name = local.common.kops_state_bucket
+  kops_state_bucket = local.common.kops_state_bucket
   ingress_ips = ["10.0.0.100/32", "10.0.0.101/32"]
   vpc_id = dependency.vpc.outputs.vpc_id
 }

@@ -171,8 +171,9 @@ spec:
   nodeLabels:
     kops.k8s.io/instancegroup: nodes
   role: Node
-  subnet:
+  subnets:
   {{if .azs }}
   {{range $i, $id := .azs.value}}
   - private-{{index $.azs.value $i}}
+  {{end}}
   {{end}}

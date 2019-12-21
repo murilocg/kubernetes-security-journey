@@ -23,7 +23,7 @@ if jq -e . >/dev/null 2>&1 <<<"$json_string"; then
   --set-string cluster_name=${CLUSTER_NAME} \
   --set-string kops_s3_bucket_name=${STATE} \
   --set-string public_zone_id=${PUBLIC_ZONE_ID} \
-  --set-string env=${ENVIRONMENT}
+  --set-string env=${ENVIRONMENT} \
   --template cluster-definition.yaml --format-yaml > cluster.yaml
 else
   exit 0

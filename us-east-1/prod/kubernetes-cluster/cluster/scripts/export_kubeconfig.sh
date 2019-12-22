@@ -8,7 +8,7 @@ KUBE_CONFIG="$3"
 
 kops export kubecfg ${CLUSTER_NAME} --state ${STATE} --kubeconfig ${KUBE_CONFIG}
 
-SERVER=$(kubectl config view --kubeconfig .kube -o jsonpath='{..clusters[0].cluster.server}')
+SERVER=$(kubectl config view --kubeconfig ${KUBE_CONFIG} -o jsonpath='{..clusters[0].cluster.server}')
 
 # Path to your hosts file
 hostsFile="/etc/hosts"
@@ -56,4 +56,4 @@ for i in `dig +short $(basename ${SERVER})`; do
 done
 
 # Update .kube configuration
-kubectl config set-cluster ${CLUSTER_NAME} --server=https://${CLUSTER_NAME} --kubeconfig .kube
+kubectl config set-cluster ${CLUSTER_NAME} --server=https://${CLUSTER_NAME} --kubeconfig ${KUBE_CONFIG}

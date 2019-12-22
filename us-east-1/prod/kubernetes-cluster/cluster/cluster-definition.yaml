@@ -144,7 +144,7 @@ spec:
     kops.k8s.io/instancegroup: master-ig
   role: Master
   subnets:
-  - private-{{index $.azs.value 0}}
+  - private-{{.azs.value 0}}
 ---
 
 apiVersion: kops/v1alpha2
@@ -172,8 +172,6 @@ spec:
     kops.k8s.io/instancegroup: nodes
   role: Node
   subnets:
-  {{if .azs }}
   {{range $i, $id := .azs.value}}
   - private-{{index $.azs.value $i}}
-  {{end}}
   {{end}}

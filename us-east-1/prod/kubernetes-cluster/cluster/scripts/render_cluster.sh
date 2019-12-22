@@ -8,8 +8,6 @@ STATE="s3://$2"
 PUBLIC_ZONE_ID="$3"
 ENVIRONMENT="$4"
 
-yell() { echo "$0: $*" >&2; }
-
 #Check if the output is a valid json
 if jq -e . >/dev/null 2>&1 <<<"$json_string"; then
   # Removing old etcd backups

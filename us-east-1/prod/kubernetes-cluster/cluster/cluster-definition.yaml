@@ -1,0 +1,177 @@
+apiVersion: kops/v1alpha2
+kind: Cluster
+metadata:
+  name: {{.cluster_name}}
+spec:
+  api:  
+    loadBalancer:
+      type: Public
+      {{if .k8s_api_http_security_group_id }}
+      additionalSecurityGroups: ["{{.k8s_api_http_security_group_id.value}}"]
+      {{end}}
+  authorization:
+    rbac: {}
+  channel: stable
+  cloudLabels:
+    environment: {{.env}}
+    owner: {{.cluster_name}}
+    solution: kubernetes
+  cloudProvider: aws
+  configBase: {{.kops_s3_bucket_name}}/{{.cluster_name}}
+  dnsZone: {{.dns_zone.value}} 
+  additionalPolicies: 
+    node: | 
+       [
+         {
+           "Effect": "Allow",
+           "Action": [
+             "route53:ChangeResourceRecordSets"
+           ],
+           "Resource": [
+             "arn:aws:route53:::hostedzone/{{.public_zone_id}}"
+           ]
+         },
+         {
+           "Effect": "Allow",
+           "Action": [
+             "route53:ListHostedZones",
+             "route53:ListResourceRecordSets",
+             "route53:ListHostedZonesByName"
+           ],
+           "Resource": [
+             "*"
+           ]
+         },
+         {
+           "Effect": "Allow",
+           "Action": [
+             "route53:GetChange"
+           ],
+           "Resource": [
+             "arn:aws:route53:::change/*"
+           ]
+         },
+         {
+           "Effect": "Allow",
+           "Action": [
+             "route53:ChangeResourceRecordSets"
+           ],
+           "Resource": [
+             "arn:aws:route53:::hostedzone/{{.public_zone_id}}"
+           ]
+         }
+       ]
+  etcdClusters:
+  - cpuRequest: 200m
+    etcdMembers:
+    - instanceGroup: master-ig
+      name: a
+    memoryRequest: 100Mi
+    name: main
+    version: 3.2.24
+  - cpuRequest: 100m
+    etcdMembers:
+    - instanceGroup: master-ig
+      name: a
+    memoryRequest: 100Mi
+    name: events
+    version: 3.2.24
+  iam:
+    allowContainerRegistry: true
+    legacy: false
+  kubelet:
+    anonymousAuth: false
+  kubernetesApiAccess:
+  - 0.0.0.0/0
+  kubernetesVersion: 1.14.6
+  masterInternalName: api.internal.{{.cluster_name}}
+  masterPublicName: api.{{.cluster_name}}
+  networkCIDR: {{.vpc_cidr_block.value}} 
+  networkID: {{.vpc_id.value}}
+  networking:
+    calico:
+      majorVersion: v3
+  nonMasqueradeCIDR: 100.64.0.0/10
+  sshAccess:
+  - 0.0.0.0/0
+  subnets:
+  {{if .azs }}
+  {{range $i, $id := .private_subnets.value}}
+  - id: {{.}}
+    cidr: {{index $.private_subnets_cidr_blocks.value $i}}
+    type: Private
+    name: private-{{index $.azs.value $i}}
+    zone: {{index $.azs.value $i}}
+  {{end}}
+  {{range $i, $id := .public_subnets.value}}
+  - id: {{.}}
+    cidr: {{index $.public_subnets_cidr_blocks.value $i}}
+    type: Utility
+    name: utility-{{index $.azs.value $i}}
+    zone: {{index $.azs.value $i}}
+  {{end}}
+  {{end}}
+  topology:
+    dns:
+      type: Private
+    masters: private
+    nodes: private
+
+---
+
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  creationTimestamp: 2019-09-19T12:53:29Z
+  generation: 1
+  labels:
+    kops.k8s.io/cluster: {{.cluster_name}}
+  name: master-ig
+spec:
+  image: kope.io/k8s-1.14-debian-stretch-amd64-hvm-ebs-2019-08-16 
+  machineType: t3.medium
+  maxSize: 1
+  minSize: 1
+  mixedInstancesPolicy:
+    instances:
+    - m5.large
+    - t3.medium
+    - c4.large
+    onDemandAboveBase: 0
+    onDemandBase: 0
+    spotInstancePools: 3
+  nodeLabels:
+    kops.k8s.io/instancegroup: master-ig
+  role: Master
+  subnets:
+  - private-{{.azs.value 0}}
+---
+
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  creationTimestamp: 2019-09-19T12:53:30Z
+  generation: 2
+  labels:
+    kops.k8s.io/cluster: {{.cluster_name}}
+  name: nodes
+spec:
+  image: kope.io/k8s-1.14-debian-stretch-amd64-hvm-ebs-2019-08-16 
+  machineType: t3.large
+  maxSize: 3
+  minSize: 3
+  mixedInstancesPolicy:
+    instances:
+    - m5.large
+    - t3.medium
+    - c4.large
+    onDemandAboveBase: 0
+    onDemandBase: 0
+    spotInstancePools: 3
+  nodeLabels:
+    kops.k8s.io/instancegroup: nodes
+  role: Node
+  subnets:
+  {{range $i, $id := .azs.value}}
+  - private-{{index $.azs.value $i}}
+  {{end}}

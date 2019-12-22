@@ -23,6 +23,11 @@ if jq -e . >/dev/null 2>&1 <<<"$json_string"; then
   --set-string public_zone_id=${PUBLIC_ZONE_ID} \
   --set-string env=${ENVIRONMENT} \
   --template cluster-definition.yaml --format-yaml > cluster.yaml
+
+  kops replace -f cluster.yaml --state ${STATE} --name ${CLUSTER_NAME} --force
+  kops create secret --name ${CLUSTER_NAME} --state ${STATE} sshpublickey admin -i ~/.ssh/id_rsa.pub
+  kops update cluster --out=. --target=terraform --state ${STATE} --name ${CLUSTER_NAME}
+  rm -fr versions.tf || true
 else
   exit 0
 fi

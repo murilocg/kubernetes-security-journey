@@ -4,19 +4,19 @@ output "tiller_namespace" {
 }
 
 
-output "helm_client_tls_private_key_pem" {
+output "key" {
   description = "The private key of the TLS certificate key pair to use for the helm client."
   sensitive   = true
   value       = module.helm_client_tls_certs.tls_certificate_key_pair_private_key_pem
 }
 
-output "helm_client_tls_public_cert_pem" {
+output "cert" {
   description = "The public certificate of the TLS certificate key pair to use for the helm client."
   sensitive   = true
   value       = module.helm_client_tls_certs.tls_certificate_key_pair_certificate_pem
 }
 
-output "helm_client_tls_ca_cert_pem" {
+output "ca" {
   description = "The CA certificate of the TLS certificate key pair to use for the helm client."
   sensitive   = true
   value       = module.helm_client_tls_certs.ca_tls_certificate_key_pair_certificate_pem

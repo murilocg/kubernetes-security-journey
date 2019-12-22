@@ -20,16 +20,6 @@ terraform {
     ]
     run_on_error = false
   }
-
-  before_hook "create_cluster" {
-    commands = ["apply"]
-    execute = [
-      "./scripts/create_cluster.sh",
-      "${local.common.cluster_name}",
-      "${local.common.kops_state_bucket}"
-    ]
-    run_on_error = false
-  }
   
   after_hook "export_kubeconfig" {
     commands = ["apply"]

@@ -19,6 +19,6 @@ dependency "cluster" {
   mock_outputs_allowed_terraform_commands = ["plan"]
 }
 
-input {
+inputs = {
   kube_config = "${local.common.kube_config}"
 }

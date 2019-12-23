@@ -7,9 +7,11 @@ CLUSTER_NAME="$1"
 STATE="s3://$2"
 PUBLIC_ZONE_ID="$3"
 ENVIRONMENT="$4"
+EMPTY_JSON="$(jq --arg a $TF_OUTPUT --arg b '{}' -n '$a != $b')"
+VALID_JSON="$(jq -e . >/dev/null 2>&1 <<<\"$json_string\")"
 
 #Check if the output is a valid json
-if jq -e . >/dev/null 2>&1 <<<"$json_string"; then
+if (${VALID_JSON}) && (${EMPTY_JSON}) then
   # Removing old etcd backups
   aws s3 rm ${STATE}/backups || true
   aws s3 rm ${STATE}/${CLUSTER_NAME}/cluster.spec || true
@@ -27,7 +29,6 @@ if jq -e . >/dev/null 2>&1 <<<"$json_string"; then
   kops replace -f cluster.yaml --state ${STATE} --name ${CLUSTER_NAME} --force
   kops create secret --name ${CLUSTER_NAME} --state ${STATE} sshpublickey admin -i ~/.ssh/id_rsa.pub
   kops update cluster --out=. --target=terraform --state ${STATE} --name ${CLUSTER_NAME}
-  rm -fr versions.tf || true
 else
   exit 0
 fi

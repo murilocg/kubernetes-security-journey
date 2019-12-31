@@ -18,7 +18,7 @@ dependency "vpc" {
 }
 
 inputs = {
-  cluster_name = local.cluster.name
+  cluster_name = local.cluster.clusterName
   environment = local.common.env.name
   region = local.common.env.region
   kops_state_bucket = local.cluster.kopsStateBucket

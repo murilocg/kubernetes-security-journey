@@ -12,7 +12,7 @@ inputs = {
   
   environment     = local.common.env.name
   region          = local.common.env.region
-  cluster_name    = local.cluster.name
+  cluster_name    = local.cluster.clusterName
   
   cidr            = local.common.vpc.cidr
   azs             = local.common.vpc.azs

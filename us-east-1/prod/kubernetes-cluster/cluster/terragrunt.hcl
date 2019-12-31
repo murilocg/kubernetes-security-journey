@@ -16,7 +16,7 @@ terraform {
     commands = ["plan"]
     execute = [
       "./scripts/render_cluster.sh",
-      "${local.cluster.name}",
+      "${local.cluster.clusterName}",
       "${local.cluster.kopsStateBucket}",
       "${local.common.zone.id}",
       "${local.common.env.name}"
@@ -29,7 +29,7 @@ terraform {
     commands = ["apply"]
     execute = [
       "./scripts/export_kubeconfig.sh",
-      "${local.cluster.name}",
+      "${local.cluster.clusterName}",
       "${local.cluster.kopsStateBucket}",
       "${local.cluster.kubeConfig}"
     ]

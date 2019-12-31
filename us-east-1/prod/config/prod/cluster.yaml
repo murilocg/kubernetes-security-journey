@@ -1,0 +1,28 @@
+clusterName: 'prodapk8s.prod.local'
+kubernetesVersion: 1.16.4
+kopsStateBucket: 'br-com-prodap-kops-state-prod'
+kubeConfig: '$HOME/.kube/config'
+master:
+  machineType: t3.medium
+  maxSize: 1
+  minSize: 1
+  instances:
+    - t3.medium
+  onDemandAboveBase: 1
+  onDemandBase: 1
+  spotInstancePools: 0
+  azs:
+    - 'us-east-1a'
+nodes:
+  machineType: c3.large
+  maxSize: 3
+  minSize: 3
+  instances:
+    - c3.large
+  onDemandAboveBase: 1
+  onDemandBase: 3
+  spotInstancePools: 0
+  azs:
+    - 'us-east-1a'
+    - 'us-east-1b'
+    - 'us-east-1c'

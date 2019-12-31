@@ -3,7 +3,7 @@ include {
 }
 
 locals {
-  path = "${find_in_parent_folders()}/../config/${get_env("ENVIRONMENT", "dev")}"
+  path = "${find_in_parent_folders()}/../config/${get_env("ENVIRONMENT", "none")}"
   common = yamldecode(file("${local.path}/common.yaml"))
   cluster = yamldecode(file("${local.path}/cluster.yaml"))
 }

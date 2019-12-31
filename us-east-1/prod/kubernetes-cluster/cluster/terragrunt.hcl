@@ -4,9 +4,10 @@ include {
 }
 
 locals {
-  common = yamldecode(file(find_in_parent_folders("common.yaml")))
-  cluster = yamldecode(file(find_in_parent_folders("cluster.yaml")))
-  path_cluster_config = find_in_parent_folders("cluster.yaml")
+  path = "${find_in_parent_folders()}/../config/${get_env("ENVIRONMENT", "none")}"
+  path_cluster_config = "${local.path}/cluster.yaml"
+  common = yamldecode(file("${local.path}/common.yaml"))
+  cluster = yamldecode(file("${local.path_cluster_config }"))
 }
 
 terraform {
@@ -16,8 +17,8 @@ terraform {
     execute = [
       "./scripts/render_cluster.sh",
       "${local.cluster.name}",
-      "${local.cluster.kops_state_bucket}",
-      "${local.common.zone.public_zone_id}",
+      "${local.cluster.kopsStateBucket}",
+      "${local.common.zone.id}",
       "${local.common.env.name}"
       "${local.path_cluster_config}"
     ]
@@ -29,8 +30,8 @@ terraform {
     execute = [
       "./scripts/export_kubeconfig.sh",
       "${local.cluster.name}",
-      "${local.cluster.kops_state_bucket}",
-      "${local.cluster.kube_config}"
+      "${local.cluster.kopsStateBucket}",
+      "${local.cluster.kubeConfig}"
     ]
     run_on_error = false
   }

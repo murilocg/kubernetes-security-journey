@@ -1,5 +1,5 @@
 locals {
-  global = yamldecode(file("./config.yaml"))
+  common = yamldecode(file("./config/${get_env("ENVIRONMENT", "dev")}/common.yaml"))
 }
 
 remote_state {

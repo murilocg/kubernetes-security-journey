@@ -1,6 +1,6 @@
-clusterName: 'k8sprodap.dev.local'
+clusterName: 'k8sguru.dev.local'
 kubernetesVersion: 1.16.4
-kopsStateBucket: 'br-com-k8sprodap-kops-state-dev'
+kopsStateBucket: 'br-com-k8sguru-kops-state-dev'
 kubeConfig: '$HOME/.kube/config'
 master:
   machineType: t3.medium

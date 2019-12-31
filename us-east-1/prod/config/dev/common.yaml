@@ -1,8 +1,8 @@
 env:
   name: 'dev'
   region: 'us-east-1'
-  bucket_terragrunt_state: 'br-com-k8sprodap-terragrunt-state-dev'
-  dynamodb_table: 'br-com-k8sprodap-terragrunt-locks'
+  bucket_terragrunt_state: 'br-com-k8sguru-terragrunt-state-dev'
+  dynamodb_table: 'br-com-k8sguru-terragrunt-locks'
 zone:
   name: 'k8sguru.info'
   id: 'ZXX5YL5YERQ7H'

@@ -1,7 +1,7 @@
 env:
   name: 'prod'
   region: 'us-east-1'
-  bucket_terragrunt_state: 'br-com-k8sprodap-terragrunt-state-prod'
+  bucket_terragrunt_state: 'br-com-k8sguru-terragrunt-state-prod'
   dynamodb_table: 'br-com-k8sprodap-terragrunt-locks'
 zone:
   name: 'k8sguru.info'

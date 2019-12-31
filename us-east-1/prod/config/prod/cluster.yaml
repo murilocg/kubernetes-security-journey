@@ -1,6 +1,6 @@
-clusterName: 'prodapk8s.prod.local'
+clusterName: 'k8sguru.prod.local'
 kubernetesVersion: 1.16.4
-kopsStateBucket: 'br-com-prodap-kops-state-prod'
+kopsStateBucket: 'br-com-k8sguru-kops-state-prod'
 kubeConfig: '$HOME/.kube/config'
 master:
   machineType: t3.medium

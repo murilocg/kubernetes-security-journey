@@ -3,13 +3,13 @@ include {
 }
 
 locals {
-  common = yamldecode(file(find_in_parent_folders("common_vars.yaml")))
+  config = yamldecode(file(find_in_parent_folders("config.yaml")))
 }
 
 terraform {
   after_hook "gen_cert" {
     commands = ["apply"]
-    execute = ["./scripts/gencerts.sh", "${local.common.helm_home}"]
+    execute = ["./scripts/gencerts.sh", "${local.config.tiller.helm_home}"]
   }
 }
 
@@ -20,5 +20,5 @@ dependency "cluster" {
 }
 
 inputs = {
-  kube_config = "${local.common.kube_config}"
+  kube_config = "${local.config.cluster.kube_config}"
 }

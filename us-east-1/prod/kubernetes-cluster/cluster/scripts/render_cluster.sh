@@ -7,6 +7,7 @@ CLUSTER_NAME="$1"
 STATE="s3://$2"
 PUBLIC_ZONE_ID="$3"
 ENVIRONMENT="$4"
+CLUSTER_CONFIG="$5"
 EMPTY_JSON="$(jq --arg a $TF_OUTPUT --arg b '{}' -n '$a != $b')"
 VALID_JSON="$(jq -e . >/dev/null 2>&1 <<<\"$json_string\")"
 
@@ -20,8 +21,7 @@ if (${VALID_JSON}) && (${EMPTY_JSON}) then
   kops toolbox template --name $CLUSTER_NAME \
   --fail-on-missing=false \
   --values <( echo ${TF_OUTPUT}) \
-  --set-string cluster_name=${CLUSTER_NAME} \
-  --set-string kops_s3_bucket_name=${STATE} \
+  --values ${CLUSTER_CONFIG} \
   --set-string public_zone_id=${PUBLIC_ZONE_ID} \
   --set-string env=${ENVIRONMENT} \
   --template cluster-definition.yaml --format-yaml > cluster.yaml

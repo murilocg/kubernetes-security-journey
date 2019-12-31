@@ -3,17 +3,20 @@ include {
 }
 
 locals {
-  common = yamldecode(file(find_in_parent_folders("common_vars.yaml")))
+  path = "${find_in_parent_folders()}/../config/$ENVIRONMENT"
+  common = yamldecode(file("${local.path}/common.yaml"))
+  cluster = yamldecode(file("${local.path}/cluster.yaml")))
 }
 
 inputs = {
   
-  environment = local.common.environment
-  cluster_name = local.common.cluster_name
-  region = local.common.region
+  environment     = local.common.env.name
+  region          = local.common.env.region
+  cluster_name    = local.cluster.name
   
-  cidr = "10.0.0.0/16"
-  azs             = [ "us-east-1a", "us-east-1b", "us-east-1c" ]
-  private_subnets = [ "10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24" ]
-  public_subnets  = [ "10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+  cidr            = local.common.vpc.cidr
+  azs             = local.common.vpc.azs
+  private_subnets = local.common.vpc.private_subnets
+  public_subnets  = local.common.vpc.public_subnets
+
 }

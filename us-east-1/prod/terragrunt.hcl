@@ -6,10 +6,10 @@ remote_state {
   backend = "s3"
   config = {
     encrypt        = true
-    bucket         = "${local.global.bucket_terragrunt_state}"
+    bucket         = "${local.common.bucket_terragrunt_state}"
     key            = "${path_relative_to_include()}/terraform.tfstate"
-    region         = "${local.global.region}"
-    dynamodb_table = "${local.global.dynamodb_table}"
+    region         = "${local.common.region}"
+    dynamodb_table = "${local.common.dynamodb_table}"
   }
 }
 

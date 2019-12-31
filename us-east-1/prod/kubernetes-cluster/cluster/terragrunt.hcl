@@ -19,7 +19,7 @@ terraform {
       "${local.cluster.clusterName}",
       "${local.cluster.kopsStateBucket}",
       "${local.common.zone.id}",
-      "${local.common.env.name}"
+      "${local.common.env.name}",
       "${local.path_cluster_config}"
     ]
     run_on_error = false

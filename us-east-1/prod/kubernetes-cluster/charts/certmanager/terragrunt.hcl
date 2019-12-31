@@ -13,17 +13,17 @@ terraform {
 
   before_hook "before_apply" {
     commands = ["apply"]
-    execute = ["kubectl","--kubeconfig=${trimspace(abspath("${local.common.kube_config}"))}","apply","-f","https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml","--validate=false"]
+    execute = ["kubectl","--kubeconfig=${trimspace(abspath("${local.cluster.kubeConfig}"))}","apply","-f","https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml","--validate=false"]
     run_on_error = false
   }
   after_hook "after_apply" {
     commands = ["apply"]
-    execute = ["kubectl","--kubeconfig=${trimspace(abspath("${local.common.kube_config}"))}","apply","-f","clusterissuer-staging.yaml"]
+    execute = ["kubectl","--kubeconfig=${trimspace(abspath("${local.cluster.kubeConfig}"))}","apply","-f","clusterissuer-staging.yaml"]
     run_on_error = false
   }
   after_hook "after_apply" {
     commands = ["apply"]
-    execute = ["kubectl","--kubeconfig=${trimspace(abspath("${local.common.kube_config}"))}","apply","-f","clusterissuer-prod.yaml"]
+    execute = ["kubectl","--kubeconfig=${trimspace(abspath("${local.cluster.kubeConfig}"))}","apply","-f","clusterissuer-prod.yaml"]
     run_on_error = false
   }
 

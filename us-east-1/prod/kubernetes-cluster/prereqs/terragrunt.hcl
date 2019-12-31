@@ -3,7 +3,9 @@ include {
 }
 
 locals {
-  common = yamldecode(file(find_in_parent_folders("common_vars.yaml")))
+  path = "${find_in_parent_folders()}/../config/${get_env("ENVIRONMENT", "none")}"
+  common = yamldecode(file("${local.path}/common.yaml"))
+  cluster = yamldecode(file("${local.path}/cluster.yaml"))
 }
 
 dependency "vpc" {
@@ -16,10 +18,10 @@ dependency "vpc" {
 }
 
 inputs = {
-  cluster_name = local.common.cluster_name
-  environment = local.common.environment
-  region = local.common.region
-  kops_state_bucket = local.common.kops_state_bucket
-  ingress_ips = ["10.0.0.100/32", "10.0.0.101/32"]
+  cluster_name = local.cluster.clusterName
+  environment = local.common.env.name
+  region = local.common.env.region
+  kops_state_bucket = local.cluster.kopsStateBucket
+  ingress_ips = local.common.prereqs.ingressIps
   vpc_id = dependency.vpc.outputs.vpc_id
 }

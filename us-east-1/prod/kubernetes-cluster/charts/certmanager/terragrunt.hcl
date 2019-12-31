@@ -1,31 +1,32 @@
 
+include {
+  path = find_in_parent_folders()
+}
 
 locals {
-  common = yamldecode(file(find_in_parent_folders("common_vars.yaml")))
+  path = "${find_in_parent_folders()}/../config/${get_env("ENVIRONMENT", "none")}"
+  common = yamldecode(file("${local.path}/common.yaml"))
+  cluster = yamldecode(file("${local.path}/cluster.yaml"))
 }
 
 terraform {
 
   before_hook "before_apply" {
     commands = ["apply"]
-    execute = ["kubectl","--kubeconfig=${trimspace(abspath("${local.common.kube_config}"))}","apply","-f","https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml","--validate=false"]
+    execute = ["kubectl","--kubeconfig=${trimspace(abspath("${local.cluster.kubeConfig}"))}","apply","-f","https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml","--validate=false"]
     run_on_error = false
   }
   after_hook "after_apply" {
     commands = ["apply"]
-    execute = ["kubectl","--kubeconfig=${trimspace(abspath("${local.common.kube_config}"))}","apply","-f","clusterissuer-staging.yaml"]
+    execute = ["kubectl","--kubeconfig=${trimspace(abspath("${local.cluster.kubeConfig}"))}","apply","-f","clusterissuer-staging.yaml"]
     run_on_error = false
   }
   after_hook "after_apply" {
     commands = ["apply"]
-    execute = ["kubectl","--kubeconfig=${trimspace(abspath("${local.common.kube_config}"))}","apply","-f","clusterissuer-prod.yaml"]
+    execute = ["kubectl","--kubeconfig=${trimspace(abspath("${local.cluster.kubeConfig}"))}","apply","-f","clusterissuer-prod.yaml"]
     run_on_error = false
   }
 
-}
-
-include {
-  path = find_in_parent_folders()
 }
 
 dependency "tiller" {
@@ -36,8 +37,8 @@ dependency "tiller" {
 
 inputs = {
   namespace = "kube-system"
-  public_zone_id = "${local.common.public_zone_id}"
-  public_zone_name   = "${local.common.public_zone_name}"
-  helm_home = "${local.common.helm_home}"
-  kube_config = "${local.common.kube_config}"
+  public_zone_id = "${local.common.zone.id}"
+  public_zone_name   = "${local.common.zone.name}"
+  helm_home = "${local.common.helmHome}"
+  kube_config = "${local.common.kubeConfig}"
 }

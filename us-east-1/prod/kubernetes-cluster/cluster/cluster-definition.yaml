@@ -1,7 +1,7 @@
 apiVersion: kops/v1alpha2
 kind: Cluster
 metadata:
-  name: {{.cluster_name}}
+  name: {{.clusterName}}
 spec:
   api:  
     loadBalancer:
@@ -14,10 +14,10 @@ spec:
   channel: stable
   cloudLabels:
     environment: {{.env}}
-    owner: {{.cluster_name}}
+    owner: {{.clusterName}}
     solution: kubernetes
   cloudProvider: aws
-  configBase: {{.kops_s3_bucket_name}}/{{.cluster_name}}
+  configBase: {{.kopsStateBucket}}/{{.clusterName}}
   dnsZone: {{.dns_zone.value}} 
   additionalPolicies: 
     node: | 
@@ -83,9 +83,9 @@ spec:
     anonymousAuth: false
   kubernetesApiAccess:
   - 0.0.0.0/0
-  kubernetesVersion: 1.14.6
-  masterInternalName: api.internal.{{.cluster_name}}
-  masterPublicName: api.{{.cluster_name}}
+  kubernetesVersion: {{.kubernetesVersion}}
+  masterInternalName: api.internal.{{.clusterName}}
+  masterPublicName: api.{{.clusterName}}
   networkCIDR: {{.vpc_cidr_block.value}} 
   networkID: {{.vpc_id.value}}
   networking:
@@ -122,56 +122,52 @@ spec:
 apiVersion: kops/v1alpha2
 kind: InstanceGroup
 metadata:
-  creationTimestamp: 2019-09-19T12:53:29Z
   generation: 1
   labels:
-    kops.k8s.io/cluster: {{.cluster_name}}
+    kops.k8s.io/cluster: {{.clusterName}}
   name: master-ig
 spec:
   image: kope.io/k8s-1.14-debian-stretch-amd64-hvm-ebs-2019-08-16 
-  machineType: t3.medium
-  maxSize: 1
-  minSize: 1
+  machineType: {{.master.machineType}}
+  maxSize: {{.master.maxSize}}
+  minSize: {{.master.minSize}}
   mixedInstancesPolicy:
     instances:
-    - m5.large
-    - t3.medium
-    - c4.large
-    onDemandAboveBase: 0
-    onDemandBase: 0
-    spotInstancePools: 3
+    {{master.instances}}
+    onDemandAboveBase: {{.master.onDemandAboveBase}}
+    onDemandBase: {{.master.onDemandBase}}
+    spotInstancePools: {{.master.spotInstancePools}}
   nodeLabels:
     kops.k8s.io/instancegroup: master-ig
   role: Master
   subnets:
-  - private-{{.azs.value 0}}
+    {{range $i, $id := .master.azs}}
+    - private-{{index $.master.azs $i}}
+    {{end}}
 ---
 
 apiVersion: kops/v1alpha2
 kind: InstanceGroup
 metadata:
-  creationTimestamp: 2019-09-19T12:53:30Z
   generation: 2
   labels:
-    kops.k8s.io/cluster: {{.cluster_name}}
+    kops.k8s.io/cluster: {{.clusterName}}
   name: nodes
 spec:
   image: kope.io/k8s-1.14-debian-stretch-amd64-hvm-ebs-2019-08-16 
-  machineType: t3.large
-  maxSize: 3
-  minSize: 3
+  machineType: {{.node.machineType}}
+  maxSize: {{.node.maxSize}}
+  minSize: {{.node.minSize}}
   mixedInstancesPolicy:
     instances:
-    - m5.large
-    - t3.medium
-    - c4.large
-    onDemandAboveBase: 0
-    onDemandBase: 0
-    spotInstancePools: 3
+    {{.node.instances}}
+    onDemandAboveBase: {{.node.onDemandAboveBase}}
+    onDemandBase: {{.node.onDemandBase}}
+    spotInstancePools: {{.node.spotInstancePools}}
   nodeLabels:
     kops.k8s.io/instancegroup: nodes
   role: Node
   subnets:
-  {{range $i, $id := .azs.value}}
-  - private-{{index $.azs.value $i}}
-  {{end}}
+    {{range $i, $id := .node.azs}}
+    - private-{{index $.node.azs $i}}
+    {{end}}

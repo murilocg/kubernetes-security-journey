@@ -1,11 +1,12 @@
 
-
-locals {
-  common = yamldecode(file(find_in_parent_folders("common_vars.yaml")))
-}
-
 include {
   path = find_in_parent_folders()
+}
+
+locals {
+  path = "${find_in_parent_folders()}/../config/${get_env("ENVIRONMENT", "none")}"
+  common = yamldecode(file("${local.path}/common.yaml"))
+  cluster = yamldecode(file("${local.path}/cluster.yaml"))
 }
 
 dependency "tiller" {
@@ -15,8 +16,8 @@ dependency "tiller" {
 
 inputs = {
   namespace = "kube-system"
-  public_zone_id = "${local.common.public_zone_id}"
-  public_zone_name   = "${local.common.public_zone_name}"
-  helm_home = "${local.common.helm_home}"
-  kube_config = "${local.common.kube_config}"
+  public_zone_id = "${local.common.zone.id}"
+  public_zone_name   = "${local.common.zone.name}"
+  helm_home = "${local.common.tiller.helmHome}"
+  kube_config = "${local.cluster.kubeConfig}"
 }

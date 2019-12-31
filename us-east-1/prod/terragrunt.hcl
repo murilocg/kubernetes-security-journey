@@ -1,15 +1,15 @@
 locals {
-  common = yamldecode(file("./common_vars.yaml"))
+  common = yamldecode(file("./config/${get_env("ENVIRONMENT", "dev")}/common.yaml"))
 }
 
 remote_state {
   backend = "s3"
   config = {
     encrypt        = true
-    bucket         = "${local.common.bucket_terragrunt_state}"
+    bucket         = "${local.common.env.bucket_terragrunt_state}"
     key            = "${path_relative_to_include()}/terraform.tfstate"
-    region         = "${local.common.region}"
-    dynamodb_table = "${local.common.dynamodb_table}"
+    region         = "${local.common.env.region}"
+    dynamodb_table = "${local.common.env.dynamodb_table}"
   }
 }
 

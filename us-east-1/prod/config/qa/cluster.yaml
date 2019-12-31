@@ -1,0 +1,34 @@
+clusterName: 'k8sguru.qa.local'
+kubernetesVersion: 1.16.4
+kopsStateBucket: 'br-com-k8sguru-kops-state-qa'
+kubeConfig: '$HOME/.kube/config'
+master:
+  machineType: t3.medium
+  maxSize: 1
+  minSize: 1
+  instances:
+    - m5.large
+    - t3.medium
+    - c3.large
+  onDemandAboveBase: 0
+  onDemandBase: 0
+  spotInstancePools: 1
+  azs:
+    - 'us-east-1a'
+    - 'us-east-1b'
+    - 'us-east-1c'
+nodes:
+  machineType: t3.medium
+  maxSize: 3
+  minSize: 3
+  instances:
+    - m5.large
+    - t3.medium
+    - c3.large
+  onDemandAboveBase: 0
+  onDemandBase: 0
+  spotInstancePools: 3
+  azs:
+    - 'us-east-1a'
+    - 'us-east-1b'
+    - 'us-east-1c'

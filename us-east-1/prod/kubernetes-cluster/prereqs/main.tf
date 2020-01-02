@@ -19,4 +19,8 @@ module "prereqs" {
     Application = "network"
     "kubernetes.io/cluster/${var.cluster_name}" = "${var.environment}"
   }
+  tags = {
+    Environment = "${var.environment}"
+    Application = "kops"
+  }
 }
